@@ -1,0 +1,12 @@
+{
+  "DB": {
+    "Host": "localhost:5432",
+    "Port": "9920",
+    "DBName": "multifinance",
+    "Username": "postgres",
+    "Password": "password123",
+    "Ssl": "disable",
+    "MaxOpenConnections": 10,
+    "MaxIdleConnections": 10
+  }
+}
