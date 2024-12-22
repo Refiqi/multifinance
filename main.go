@@ -1,12 +1,17 @@
 package main
 
 import (
+	"engine.multifinance.com/cache"
 	engineConfig "engine.multifinance.com/config"
 	"engine.multifinance.com/sql"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 	"log"
 	"multifinance.com/multifinance/config"
+	"multifinance.com/multifinance/handlers"
+	"multifinance.com/multifinance/middleware"
+	"multifinance.com/multifinance/model"
+	"net/http"
 	"os"
 )
 
@@ -21,16 +26,21 @@ func main() {
 
 	var configMap config.ConfigMap
 	engineConfig.LoadConfig(&configMap, envMode)
-	postgresqlDB := sql.InitDB(configMap.DB)
+	postgresDB := sql.InitDB(configMap.DB)
+	postgresDB.AutoMigrate(&model.User{}, &model.Transaction{}, &model.LoanLimit{})
 
+	lruCache := cache.NewDoubleBufferLru(configMap.DoubleBufferLruConfig)
 
 	r := gin.Default()
 
-	r.Use(gin.Logger(), gin.Recovery())
+	r.Use(middleware.InjectDBToContext(postgresDB), middleware.InjectCacheToContext(lruCache), middleware.HeaderPolicy, middleware.ValidateParams)
 
+	handlers.SetupLoanLimitRoutes(r)
+	handlers.SetupTransactionRoutes(r)
+	handlers.SetupUserRoutes(r)
 
 	// Start the server
-	if err := r.Run(":8080"); err != nil {
+	if err := r.Run(":8888"); err != nil {
 		log.Fatalf("Unable to start server: %v", err)
 	}
 }

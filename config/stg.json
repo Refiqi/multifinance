@@ -1,12 +1,17 @@
 {
   "DB": {
-    "Host": "localhost:5432",
-    "Port": "9920",
+    "Host": "localhost",
+    "Port": "5432",
     "DBName": "multifinance",
     "Username": "postgres",
-    "Password": "password123",
+    "Password": "postgres",
     "Ssl": "disable",
     "MaxOpenConnections": 10,
     "MaxIdleConnections": 10
+  },
+  "DoubleBufferLruConfig": {
+    "CacheSize": 10000,
+    "CacheRefreshMSec": 3000,
+    "CacheExpiryMSec": 10000
   }
 }
