@@ -43,7 +43,7 @@ type sqlClient struct {
 func (ths PostgresqlConfig) GetConnectionSpec() ConnectionSpec {
 	return ConnectionSpec{
 		DriverName:     "postgres",
-		DataSourceName: "host=" + ths.Host + "user=" + ths.Username + "password=" + ths.Password + "dbname=" + ths.DbName + "port=" + ths.Port + "sslmode=" + ths.Ssl + "TimeZone=Asia/Jakarta"}
+		DataSourceName: "host=" + ths.Host + " user=" + ths.Username + " password=" + ths.Password + " dbname=" + ths.DbName + " port=" + ths.Port + " sslmode=" + ths.Ssl + " TimeZone=Asia/Jakarta"}
 }
 // GetConnectionConfig ...
 func (ths PostgresqlConfig) GetConnectionConfig() ConnectionConfig {
